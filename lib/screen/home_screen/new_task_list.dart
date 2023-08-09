@@ -61,7 +61,7 @@ class _taskCreateScreenState extends State<taskCreateScreen> {
                   SizedBox(height: 1),
                   TextFormField(
                     onChanged: (Textvalue){
-                      InputOnChange("Subject",Textvalue);
+                      InputOnChange("title",Textvalue);
                     },
                     decoration: AppInputDecoration("Subject"),
 
