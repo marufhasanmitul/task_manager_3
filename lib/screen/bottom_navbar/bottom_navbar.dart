@@ -9,15 +9,15 @@ BottomNavigationBar appBottomNav(currentIndex,onItemTapped){
           label: "New"
       ),
       BottomNavigationBarItem(
-          icon: Icon(Icons.list_alt),
+          icon: Icon(Icons.check_circle_outlined),
           label: "Completed "
       ),
       BottomNavigationBarItem(
-          icon: Icon(Icons.list_alt),
+          icon: Icon(Icons.cancel_outlined),
           label: "Canceled"
       ),
       BottomNavigationBarItem(
-          icon: Icon(Icons.list_alt),
+          icon: Icon(Icons.access_time_rounded),
           label: "Progress "
       )
     ],
