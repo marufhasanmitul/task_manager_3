@@ -1,46 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:tasks_menegers/api/apiClient.dart';
+import 'package:tasks_menegers/auth/singin/sign_in_controller.dart';
 import 'package:tasks_menegers/style/style.dart';
+import 'package:get/get.dart';
 
 
-class loginScreen extends StatefulWidget {
-  const loginScreen({Key? key}) : super(key: key);
+
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
   @override
-  State<loginScreen> createState() => _loginScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _loginScreenState extends State<loginScreen> {
+class _LoginScreenState extends State<LoginScreen> {
 
-  Map<String,String> FormValues={"email":"", "password":""};
-  bool Loading=false;
+  final SignInController signInController = Get.put(SignInController());
 
-  InputOnChange(MapKey, Textvalue){
-    setState(() {
-      FormValues.update(MapKey, (value) => Textvalue);
-    });
-  }
-
-  FormOnSubmit() async{
-    if(FormValues['email']!.length==0){
-      ErrorToast('Email Required !');
-    }
-    else if(FormValues['password']!.length==0){
-      ErrorToast('Password Required !');
-    }
-    else{
-      setState(() {Loading=true;});
-      bool res=await LoginRequest(FormValues);
-      if(res==true){
-        if(mounted){
-          Navigator.pushNamedAndRemoveUntil(context, "/", (route) => false);
-        }
-
-      }
-      else{
-        setState(() {Loading=false;});
-      }
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +24,8 @@ class _loginScreenState extends State<loginScreen> {
           ScreenBackground(context),
           Container(
             alignment: Alignment.center,
-            child: Loading?(Center(child: CircularProgressIndicator())):(SingleChildScrollView(
-              padding: EdgeInsets.all(30),
+            child: signInController.loginProgress?(const Center(child: CircularProgressIndicator())):(SingleChildScrollView(
+              padding: const EdgeInsets.all(30),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,8 +36,8 @@ class _loginScreenState extends State<loginScreen> {
                   const SizedBox(height: 20),
 
                   TextFormField(
-                    onChanged: (Textvalue){
-                      InputOnChange("email",Textvalue);
+                    onChanged: (textValue){
+                      signInController.inputOnChange("email",textValue);
                     },
                     decoration: AppInputDecoration("Email Address"),
                   ),
@@ -71,8 +45,8 @@ class _loginScreenState extends State<loginScreen> {
                   const SizedBox(height: 20),
 
                   TextFormField(
-                    onChanged: (Textvalue){
-                      InputOnChange("password",Textvalue);
+                    onChanged: (textValue){
+                      signInController.inputOnChange("password",textValue);
                     },
                     decoration: AppInputDecoration("Password"),
                   ),
@@ -80,13 +54,21 @@ class _loginScreenState extends State<loginScreen> {
                   const SizedBox(height: 20),
 
 
-                  Container(child: ElevatedButton(
-                    style: AppButtonStyle(),
-                    child: SuccessButtonChild('Login'),
-                    onPressed: (){
-                      FormOnSubmit();
+                  GetBuilder<SignInController>(
+                    builder: (signInController) {
+                      return Visibility(
+                        visible:signInController.loginProgress==false,
+                        replacement:const Center(child: CircularProgressIndicator()) ,
+                        child: ElevatedButton(
+                          style: AppButtonStyle(),
+                          child: SuccessButtonChild('Login'),
+                          onPressed: (){
+                            signInController.formOnSubmit();
+                          },
+                        ),
+                      );
                     },
-                  ),),
+                  ),
 
                   const SizedBox(height: 20),
 
@@ -98,7 +80,7 @@ class _loginScreenState extends State<loginScreen> {
                         const SizedBox(height: 20),
                         InkWell(
                             onTap: (){
-                              Navigator.pushNamed(context, "/emailVerification");
+                              Get.toNamed('/emailVerification');
                             },
                             child: Text('Forget Password?',style: Head7Text(colorLightGray),
                             )
@@ -108,7 +90,7 @@ class _loginScreenState extends State<loginScreen> {
 
                         InkWell(
                             onTap: (){
-                              Navigator.pushNamed(context, "/registration");
+                              Get.toNamed('/registration');
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,

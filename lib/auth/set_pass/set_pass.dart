@@ -1,61 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:tasks_menegers/api/service.dart';
+import 'package:tasks_menegers/auth/set_pass/set_password_controller.dart';
 import 'package:tasks_menegers/style/style.dart';
-import '../../api/apiClient.dart';
+import 'package:get/get.dart';
 
 
-class setPasswordScreen extends StatefulWidget {
+class SetPasswordScreen extends StatefulWidget {
 
-  const setPasswordScreen({Key? key}) : super(key: key);
+  const SetPasswordScreen({Key? key}) : super(key: key);
   @override
-  State<setPasswordScreen> createState() => _setPasswordScreenState();
+  State<SetPasswordScreen> createState() => _SetPasswordScreenState();
 
 }
 
 
-class _setPasswordScreenState extends State<setPasswordScreen> {
+class _SetPasswordScreenState extends State<SetPasswordScreen> {
 
+  final SetPasswordController setPasswordController = Get.put(SetPasswordController());
 
-  Map<String,String> FormValues={"email":"", "OTP":"","password":"","cpassword":""};
-  bool Loading=false;
 
   @override
   initState() {
-    callStoreData();
+    setPasswordController.callStoreData();
     super.initState();
   }
 
-  callStoreData() async {
-    String? OTP= await ReadUserData("OTPVerification");
-    String? Email= await ReadUserData("EmailVerification");
-    InputOnChange("email", Email);
-    InputOnChange("OTP", OTP);
-  }
-
-  InputOnChange(MapKey, Textvalue){
-    setState(() {
-      FormValues.update(MapKey, (value) => Textvalue);
-    });
-  }
-
-  FormOnSubmit() async{
-    if(FormValues['password']!.length==0){
-      ErrorToast('Password Required !');
-    }
-    else if(FormValues['password']!=FormValues['cpassword']){
-      ErrorToast('Confirm password should be same!');
-    }
-    else{
-      setState(() {Loading=true;});
-      bool res=await SetPasswordRequest(FormValues);
-      if(res==true){
-        Navigator.pushNamedAndRemoveUntil(context, "/login", (route) => false);
-      }
-      else{
-        setState(() {Loading=false;});
-      }
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,8 +33,8 @@ class _setPasswordScreenState extends State<setPasswordScreen> {
           ScreenBackground(context),
           Container(
             alignment: Alignment.center,
-            child: Loading?(Center(child: CircularProgressIndicator())):(SingleChildScrollView(
-              padding: EdgeInsets.all(30),
+            child: setPasswordController.setPasswordProgress?(const Center(child: CircularProgressIndicator())):(SingleChildScrollView(
+              padding: const EdgeInsets.all(30),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,15 +44,15 @@ class _setPasswordScreenState extends State<setPasswordScreen> {
                   Text("Minimum length password 8 character with Latter and number combination ", style: Head7Text(colorLightGray)),
                   const SizedBox(height: 20),
                   TextFormField(
-                    onChanged: (Textvalue){
-                      InputOnChange("password",Textvalue);
+                    onChanged: (textValue){
+                      setPasswordController.inputOnChange("password",textValue);
                     },
                     decoration: AppInputDecoration("Password"),
                   ),
                   const SizedBox(height: 20),
                   TextFormField(
-                    onChanged: (Textvalue){
-                      InputOnChange("cpassword",Textvalue);
+                    onChanged: (textValue){
+                      setPasswordController.inputOnChange("cpassword",textValue);
                     },
                     decoration: AppInputDecoration("Confirm Password"),
                   ),
@@ -93,7 +61,7 @@ class _setPasswordScreenState extends State<setPasswordScreen> {
                     style: AppButtonStyle(),
                     child: SuccessButtonChild('Confirm'),
                     onPressed: (){
-                      FormOnSubmit();
+                      setPasswordController.formOnSubmit();
                     },
                   )
                 ],

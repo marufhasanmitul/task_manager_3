@@ -94,7 +94,7 @@ class _pinVerificationScreenState extends State<pinVerificationScreen> {
                                 style: Head6Text(colorGreen),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
-                                    Navigator.push(context, MaterialPageRoute(builder: (_)=>loginScreen()));
+                                    Navigator.push(context, MaterialPageRoute(builder: (_)=>LoginScreen()));
                                   }
 
 
