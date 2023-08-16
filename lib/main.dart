@@ -31,13 +31,13 @@ class MyApp extends StatelessWidget {
       title: "Task Manager",
       initialRoute: FirstRoute,
       routes: {
-        '/':(context)=> homeScreen(),
-        '/login':(context)=> loginScreen(),
-        '/registration':(context)=> registrationScreen(),
-        '/emailVerification':(context)=> emailVerificationScreen(),
-        '/pinVerification':(context)=> pinVerificationScreen(),
-        '/setPassword':(context)=> setPasswordScreen(),
-        '/taskCreate':(context)=> taskCreateScreen()
+        '/':(context)=> const homeScreen(),
+        '/login':(context)=> const loginScreen(),
+        '/registration':(context)=> const registrationScreen(),
+        '/emailVerification':(context)=> const emailVerificationScreen(),
+        '/pinVerification':(context)=> const pinVerificationScreen(),
+        '/setPassword':(context)=> const setPasswordScreen(),
+        '/taskCreate':(context)=> const taskCreateScreen()
       },
     );
   }

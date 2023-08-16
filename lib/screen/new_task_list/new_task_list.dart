@@ -121,7 +121,7 @@ class _newTaskListState extends State<newTaskList> {
 
   @override
   Widget build(BuildContext context) {
-    return Loading?(Center(child: CircularProgressIndicator())):RefreshIndicator(
+    return Loading?(const Center(child: CircularProgressIndicator())):RefreshIndicator(
         onRefresh: () async {
           await CallData();
         },

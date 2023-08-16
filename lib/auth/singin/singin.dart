@@ -31,7 +31,10 @@ class _loginScreenState extends State<loginScreen> {
       setState(() {Loading=true;});
       bool res=await LoginRequest(FormValues);
       if(res==true){
-        Navigator.pushNamedAndRemoveUntil(context, "/", (route) => false);
+        if(mounted){
+          Navigator.pushNamedAndRemoveUntil(context, "/", (route) => false);
+        }
+
       }
       else{
         setState(() {Loading=false;});
@@ -56,7 +59,7 @@ class _loginScreenState extends State<loginScreen> {
                   Text("Get Started With", style: Head1Text(colorDarkBlue)),
 
 
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
                   TextFormField(
                     onChanged: (Textvalue){
@@ -65,7 +68,7 @@ class _loginScreenState extends State<loginScreen> {
                     decoration: AppInputDecoration("Email Address"),
                   ),
 
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
                   TextFormField(
                     onChanged: (Textvalue){
@@ -74,7 +77,7 @@ class _loginScreenState extends State<loginScreen> {
                     decoration: AppInputDecoration("Password"),
                   ),
 
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
 
                   Container(child: ElevatedButton(
@@ -85,14 +88,14 @@ class _loginScreenState extends State<loginScreen> {
                     },
                   ),),
 
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
 
                   Container(
                     alignment: Alignment.center,
                     child: Column(
                       children: [
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         InkWell(
                             onTap: (){
                               Navigator.pushNamed(context, "/emailVerification");
@@ -101,7 +104,7 @@ class _loginScreenState extends State<loginScreen> {
                             )
                         ),
 
-                        SizedBox(height: 15),
+                        const SizedBox(height: 15),
 
                         InkWell(
                             onTap: (){

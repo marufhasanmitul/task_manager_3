@@ -30,7 +30,7 @@ ListView TaskList(TaskItems,DeleteItem,StatusChange){
                   Text(TaskItems[index]['title'],style: Head6Text(colorDarkBlue),),
                   Text(TaskItems[index]['description'],style: Head7Text(colorLightGray),),
                   Text(TaskItems[index]['createdDate'],style: Head9Text(colorDarkBlue),),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -39,12 +39,12 @@ ListView TaskList(TaskItems,DeleteItem,StatusChange){
                         children: [
                           ElevatedButton(onPressed:(){
                             StatusChange(TaskItems[index]['_id']);
-                          },child: Icon(Icons.list_alt_outlined,size: 16),),
+                          },child: const Icon(Icons.list_alt_outlined,size: 16),),
 
 
-                          SizedBox(width: 10),
+                          const SizedBox(width: 10),
 
-                          Icon(
+                          const Icon(
 
                        Icons.delete_forever,size: 16,color: Colors.purple,),
 

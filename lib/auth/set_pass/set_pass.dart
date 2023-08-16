@@ -72,30 +72,30 @@ class _setPasswordScreenState extends State<setPasswordScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text("Set Password", style: Head1Text(colorDarkBlue)),
-                  SizedBox(height: 1),
+                  const SizedBox(height: 1),
                   Text("Minimum length password 8 character with Latter and number combination ", style: Head7Text(colorLightGray)),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   TextFormField(
                     onChanged: (Textvalue){
                       InputOnChange("password",Textvalue);
                     },
                     decoration: AppInputDecoration("Password"),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   TextFormField(
                     onChanged: (Textvalue){
                       InputOnChange("cpassword",Textvalue);
                     },
                     decoration: AppInputDecoration("Confirm Password"),
                   ),
-                  SizedBox(height: 20),
-                  Container(child: ElevatedButton(
+                  const SizedBox(height: 20),
+                  ElevatedButton(
                     style: AppButtonStyle(),
                     child: SuccessButtonChild('Confirm'),
                     onPressed: (){
                       FormOnSubmit();
                     },
-                  ),)
+                  )
                 ],
               ),
             )),

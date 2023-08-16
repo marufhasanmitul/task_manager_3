@@ -33,7 +33,10 @@ class _taskCreateScreenState extends State<taskCreateScreen> {
       setState(() {Loading=true;});
       bool res=await TaskCreateRequest(FormValues);
       if(res==true){
-        Navigator.pushNamedAndRemoveUntil(context, "/", (route) => false);
+        if(mounted){
+          Navigator.pushNamedAndRemoveUntil(context, "/", (route) => false);
+        }
+
       }
       else{
         setState(() {Loading=false;});
@@ -51,14 +54,14 @@ class _taskCreateScreenState extends State<taskCreateScreen> {
           ScreenBackground(context),
           Container(
             alignment: Alignment.center,
-            child: Loading?(Center(child: CircularProgressIndicator())):(SingleChildScrollView(
-              padding: EdgeInsets.all(30),
+            child: Loading?(const Center(child: CircularProgressIndicator())):(SingleChildScrollView(
+              padding: const EdgeInsets.all(30),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text("Add New Task", style: Head1Text(colorDarkBlue)),
-                  SizedBox(height: 1),
+                  const SizedBox(height: 1),
                   TextFormField(
                     onChanged: (Textvalue){
                       InputOnChange("title",Textvalue);
@@ -67,7 +70,7 @@ class _taskCreateScreenState extends State<taskCreateScreen> {
 
                   ),
 
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
                   TextFormField(
                     onChanged: (Textvalue){
@@ -77,7 +80,7 @@ class _taskCreateScreenState extends State<taskCreateScreen> {
                     decoration: AppInputDecoration("Description"),
                   ),
 
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
 
                   Container(child: ElevatedButton(
