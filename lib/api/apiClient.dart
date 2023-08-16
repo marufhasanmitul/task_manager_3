@@ -1,7 +1,8 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:tasks_menegers/api/service.dart';
-import 'package:tasks_menegers/utility/text_style/text_style.dart';
+import 'package:tasks_menegers/style/style.dart';
 
 
 
@@ -116,12 +117,12 @@ Future<bool> TaskCreateRequest(FormValues) async {
   var URL=Uri.parse("${BaseURL}/createTask");
   String? token= await ReadUserData("token");
   var RequestHeaderWithToken={"Content-Type":"application/json","token":'$token'};
-
   var PostBody=json.encode(FormValues);
-
   var response= await http.post(URL,headers:RequestHeaderWithToken,body: PostBody);
   var ResultCode=response.statusCode;
   var ResultBody=json.decode(response.body);
+
+
   if(ResultCode==200 && ResultBody['status']=="success"){
     SuccessToast("Request Success");
     return true;
@@ -131,6 +132,45 @@ Future<bool> TaskCreateRequest(FormValues) async {
     return false;
   }
 }
+
+
+
+
+
+Future<List> TaskStatusCount() async {
+
+  var URL=Uri.parse("${BaseURL}/taskStatusCount");
+
+  String? token= await ReadUserData("token");
+
+  var RequestHeaderWithToken={"Content-Type":"application/json","token":'$token'};
+
+  var response= await http.get(URL,headers:RequestHeaderWithToken);
+
+  var ResultCode=response.statusCode;
+
+  var ResultBody=json.decode(response.body);
+
+  if(ResultCode==200 && ResultBody['status']=="success"){
+    SuccessToast("Count Data Success");
+
+    return ResultBody['data'];
+  }
+  else{
+    ErrorToast("Request fail ! try again");
+    return [];
+  }
+}
+
+
+
+
+
+
+
+
+
+
 
 
 Future<bool> TaskDeleteRequest(id) async {

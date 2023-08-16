@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tasks_menegers/api/apiClient.dart';
 import 'package:tasks_menegers/screen/task_list/task_lists.dart';
-import 'package:tasks_menegers/utility/text_style/text_style.dart';
+import 'package:tasks_menegers/style/style.dart';
 
 
 class cancelTaskList extends StatefulWidget {

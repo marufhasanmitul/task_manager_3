@@ -1,7 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:tasks_menegers/api/apiClient.dart';
 import 'package:tasks_menegers/screen/task_list/task_lists.dart';
-import 'package:tasks_menegers/utility/text_style/text_style.dart';
+import 'package:tasks_menegers/style/style.dart';
 
 
 
@@ -14,14 +16,18 @@ class newTaskList extends StatefulWidget {
 
 class _newTaskListState extends State<newTaskList> {
   List TaskItems=[];
+  List CountData=[];
   bool Loading=true;
   String Status="New";
 
   @override
   void initState(){
     CallData();
+    MyCountData();
     super.initState();
   }
+
+
 
   CallData() async{
     var data= await TaskListRequest("New");
@@ -29,7 +35,20 @@ class _newTaskListState extends State<newTaskList> {
       Loading=false;
       TaskItems=data;
     });
+    log(TaskItems.toString());
   }
+
+
+  MyCountData()async{
+    var countData=await  TaskStatusCount();
+    setState(() {
+      CountData=countData;
+    });
+
+    log(CountData.toString());
+  }
+
+
 
   UpdateStatus(id) async{
     setState(() {Loading=true;});
@@ -131,12 +150,49 @@ class _newTaskListState extends State<newTaskList> {
           },
         child: Icon(Icons.add,color: Colors.white,size: 30,),
         ),
-      body: Loading?(Center(child: CircularProgressIndicator())):RefreshIndicator(
-          onRefresh: () async {
-            await CallData();
-          },
-          child: TaskList(TaskItems,DeleteItem,StatusChange)
-      ),
+      body:Column(
+        children: [
+          SizedBox(
+            height: 90,
+            child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: CountData.length,
+                itemBuilder: (context,index){
+                  return SizedBox(
+                    width: 90,
+                    height: 80,
+                    child: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Column(
+                          children: [
+
+
+                            Text("${CountData[index]['sum']}"),
+                            SizedBox(height: 10,),
+                            Text("${CountData[index]['_id']}"),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                }
+
+            ),
+          ),
+          Expanded(
+            child: Loading?(Center(child: CircularProgressIndicator())):RefreshIndicator(
+                onRefresh: () async {
+                  await CallData();
+                },
+                child: TaskList(TaskItems,DeleteItem,StatusChange)
+            ),
+          ),
+        ],
+      )
+
+
+
     );
   }
 }

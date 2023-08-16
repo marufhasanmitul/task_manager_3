@@ -1,13 +1,9 @@
 
 import 'package:tasks_menegers/utility/all_image/all_image.dart';
 import 'dart:developer';
-
-
 import 'package:flutter/material.dart';
-
 import 'package:tasks_menegers/api/service.dart';
-
-import 'package:tasks_menegers/utility/text_style/text_style.dart';
+import 'package:tasks_menegers/style/style.dart';
 
 
 

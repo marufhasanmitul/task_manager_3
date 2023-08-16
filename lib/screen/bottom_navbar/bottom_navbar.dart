@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:tasks_menegers/utility/text_style/text_style.dart';
+import 'package:tasks_menegers/style/style.dart';
 
 BottomNavigationBar appBottomNav(currentIndex,onItemTapped){
   return BottomNavigationBar(
-    items: [
+    items: const [
       BottomNavigationBarItem(
           icon: Icon(Icons.list_alt),
           label: "New"

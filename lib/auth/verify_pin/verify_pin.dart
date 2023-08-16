@@ -4,7 +4,7 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:tasks_menegers/api/service.dart';
 import 'package:tasks_menegers/auth/singin/singin.dart';
 import 'package:tasks_menegers/screen/home_screen/home_page.dart';
-import 'package:tasks_menegers/utility/text_style/text_style.dart';
+import 'package:tasks_menegers/style/style.dart';
 import '../../api/apiClient.dart';
 
 
