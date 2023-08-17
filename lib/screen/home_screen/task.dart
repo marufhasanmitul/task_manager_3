@@ -4,8 +4,6 @@ import 'package:tasks_menegers/style/style.dart';
 
 
 ListView TaskList(TaskItems,DeleteItem,StatusChange){
-
-
   return ListView.builder(
       itemCount: TaskItems.length,
       itemBuilder: (context,index){

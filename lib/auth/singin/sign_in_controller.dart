@@ -9,8 +9,8 @@ class SignInController extends GetxController{
   bool _loading=false;
   bool get loginProgress => _loading;
 
-  inputOnChange(mapKey, textValue){
-      formValues.update(mapKey, (value) => textValue);
+  inputOnChange(MapKey, textValue){
+      formValues.update(MapKey, (value) => textValue);
       update();
 
   }

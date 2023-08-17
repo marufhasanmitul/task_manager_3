@@ -32,26 +32,24 @@ ListView TaskList(TaskItems,DeleteItem,StatusChange){
                   Text(TaskItems[index]['title'],style: Head6Text(colorDarkBlue),),
                   Text(TaskItems[index]['description'],style: Head7Text(colorLightGray),),
                   Text(TaskItems[index]['createdDate'],style: Head9Text(colorDarkBlue),),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       StatusChild(TaskItems[index]['status'],statusColor),
-                      Container(
-                          child: Row(
-                            children: [
-                              IconButton(onPressed:(){
+                      Row(
+                        children: [
+                          IconButton(onPressed:(){
 
-                                StatusChange(TaskItems[index]['_id']);
-                              },
-                              icon: Icon(Icons.list_alt,size: 20,color: Colors.green,),
-                              ),
+                            StatusChange(TaskItems[index]['_id']);
+                          },
+                          icon: const Icon(Icons.list_alt,size: 20,color: Colors.green,),
+                          ),
 
-                             IconButton( onPressed:(){
-                                DeleteItem(TaskItems[index]['_id']);
-                              }, icon: Icon(Icons.delete_outlined,size: 20,color: Colors.red,))
-                            ],
-                          )
+                         IconButton( onPressed:(){
+                            DeleteItem(TaskItems[index]['_id']);
+                          }, icon: const Icon(Icons.delete_outlined,size: 20,color: Colors.red,))
+                        ],
                       ),
 
                     ],

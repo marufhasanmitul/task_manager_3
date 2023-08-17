@@ -1,60 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:tasks_menegers/auth/singup/signup_controller.dart';
 import 'package:tasks_menegers/style/style.dart';
 import '../../api/apiClient.dart';
 
 
-class registrationScreen extends StatefulWidget {
-  const registrationScreen({Key? key}) : super(key: key);
+class RegistrationScreen extends StatefulWidget {
+  const RegistrationScreen({Key? key}) : super(key: key);
   @override
-  State<registrationScreen> createState() => _registrationScreenState();
+  State<RegistrationScreen> createState() => _RegistrationScreenState();
 }
 
-class _registrationScreenState extends State<registrationScreen> {
+class _RegistrationScreenState extends State<RegistrationScreen> {
+  final SignUpController signUpController = Get.put(SignUpController());
 
-  Map<String,String> FormValues={"email":"", "firstName":"","lastName":"","mobile":"","password":"","photo":"","cpassword":""};
-  bool Loading=false;
-
-  InputOnChange(MapKey, Textvalue){
-    setState(() {
-      FormValues.update(MapKey, (value) => Textvalue);
-    });
-  }
-
-  FormOnSubmit() async{
-
-    if(FormValues['email']!.length==0){
-      ErrorToast('Email Required !');
-    }
-
-    else if(FormValues['firstName']!.length==0){
-      ErrorToast('First Name Required !');
-    }
-
-    else if(FormValues['lastName']!.length==0){
-      ErrorToast('Last Name Required !');
-    }
-
-    else if(FormValues['mobile']!.length==0){
-      ErrorToast('Mobile No Required !');
-    }
-
-    else if(FormValues['password']!.length==0){
-      ErrorToast('Mobile No Required !');
-    }
-    else if(FormValues['password']!=FormValues['cpassword']){
-      ErrorToast('Confirm password should be same!');
-    }
-    else{
-      setState(() {Loading=true;});
-      bool res=await RegistrationRequest(FormValues);
-      if(res==true){
-        Navigator.pushNamedAndRemoveUntil(context, "/login", (route) => false);
-      }
-      else{
-        setState(() {Loading=false;});
-      }
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,72 +24,80 @@ class _registrationScreenState extends State<registrationScreen> {
           Container(
             alignment: Alignment.center,
             child: SingleChildScrollView(
-                child:Loading?(Center(child: CircularProgressIndicator())):(
+                child:signUpController.signUpLoading?(Center(child: CircularProgressIndicator())):(
                     Container(
-                      padding: EdgeInsets.all(30),
+                      padding: const EdgeInsets.all(30),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Join With Us", style: Head1Text(colorDarkBlue)),
 
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           TextFormField(
                               decoration: AppInputDecoration("Email Address"),
-                              onChanged: (Textvalue){
-                                InputOnChange("email",Textvalue);
+                              onChanged: (textValue){
+                                signUpController.InputOnChange("email",textValue);
                               }
                           ),
 
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           TextFormField(
                               decoration: AppInputDecoration("First Name"),
-                              onChanged: (Textvalue){
-                                InputOnChange("firstName",Textvalue);
+                              onChanged: (textValue){
+                                signUpController.InputOnChange("firstName",textValue);
                               }
                           ),
 
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           TextFormField(
                               decoration: AppInputDecoration("Last Name"),
-                              onChanged: (Textvalue){
-                                InputOnChange("lastName",Textvalue);
+                              onChanged: (textValue){
+                                signUpController.InputOnChange("lastName",textValue);
                               }
                           ),
 
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           TextFormField(
                               decoration: AppInputDecoration("Mobile"),
-                              onChanged: (Textvalue){
-                                InputOnChange("mobile",Textvalue);
+                              onChanged: (textValue){
+                                signUpController.InputOnChange("mobile",textValue);
                               }
                           ),
 
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           TextFormField(
                               decoration: AppInputDecoration("Password"),
-                              onChanged: (Textvalue){
-                                InputOnChange("password",Textvalue);
+                              onChanged: (textValue){
+                                signUpController.InputOnChange("password",textValue);
                               }
                           ),
 
 
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           TextFormField(
                               decoration: AppInputDecoration("Confirm Password"),
-                              onChanged: (Textvalue){
-                                InputOnChange("cpassword",Textvalue);
+                              onChanged: (textValue){
+                                signUpController.InputOnChange("cpassword",textValue);
                               }
                           ),
 
-                          SizedBox(height: 20),
-                          Container(child: ElevatedButton(
-                            style: AppButtonStyle(),
-                            child: SuccessButtonChild('Registration'),
-                            onPressed: (){
-                              FormOnSubmit();
+                          const SizedBox(height: 20),
+                          GetBuilder<SignUpController>(
+                            builder: (signUpController) {
+                              return Visibility(
+                                replacement:const Center(child: CircularProgressIndicator()),
+                                visible: signUpController.signUpLoading==false,
+                                child: ElevatedButton(
+                                  style: AppButtonStyle(),
+                                  child: SuccessButtonChild('Registration'),
+                                  onPressed: (){
+                                    signUpController.FormOnSubmit();
+                                  },
+                                ),
+                              );
                             },
-                          ),)
+                          )
 
                         ],
                       ),

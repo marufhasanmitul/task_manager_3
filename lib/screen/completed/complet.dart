@@ -1,35 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:tasks_menegers/api/apiClient.dart';
+import 'package:tasks_menegers/screen/completed/completed_controller.dart';
 import 'package:tasks_menegers/screen/task_list/task_lists.dart';
 import 'package:tasks_menegers/style/style.dart';
+import 'package:get/get.dart';
 
 
 
-class completedTaskList extends StatefulWidget {
-  const completedTaskList({Key? key}) : super(key: key);
+class CompletedTaskList extends StatefulWidget {
+  const CompletedTaskList({Key? key}) : super(key: key);
 
   @override
-  State<completedTaskList> createState() => _completedTaskListState();
+  State<CompletedTaskList> createState() => _CompletedTaskListState();
 }
 
-class _completedTaskListState extends State<completedTaskList> {
-  List TaskItems=[];
-  bool Loading=true;
-  String Status="Completed";
+class _CompletedTaskListState extends State<CompletedTaskList> {
+
+  CompletedController completedController=Get.put(CompletedController());
 
   @override
   void initState(){
-    CallData();
+    completedController.CallData();
     super.initState();
   }
 
-  CallData() async{
-    var data= await TaskListRequest("Completed");
-    setState(() {
-      Loading=false;
-      TaskItems=data;
-    });
-  }
+
 
   DeleteItem(id) async{
     showDialog(
@@ -41,9 +36,9 @@ class _completedTaskListState extends State<completedTaskList> {
             actions: [
               OutlinedButton(onPressed: () async {
                 Navigator.pop(context);
-                setState(() {Loading=true;});
+                setState(() {completedController.completedLoading==true;});
                 await TaskDeleteRequest(id);
-                await CallData();
+                await completedController.CallData();
               }, child: const Text('Yes')),
               OutlinedButton(onPressed: (){
                 Navigator.pop(context);
@@ -57,10 +52,10 @@ class _completedTaskListState extends State<completedTaskList> {
 
 
   UpdateStatus(id) async{
-    setState(() {Loading=true;});
-    await TaskUpdateRequest(id,Status);
-    await CallData();
-    setState(() {Status = "Completed";});
+    setState(() {completedController.completedLoading==true;});
+    await TaskUpdateRequest(id,completedController.Status);
+    await completedController.CallData();
+    setState(() {completedController.Status = "Completed";});
   }
 
 
@@ -75,42 +70,42 @@ class _completedTaskListState extends State<completedTaskList> {
                   child:Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      RadioListTile(title: Text("New"), value: "New", groupValue: Status,
+                      RadioListTile(title: Text("New"), value: "New", groupValue: completedController.Status,
                         onChanged: (value){
                           setState(() {
-                            Status = value.toString();
+                            completedController.Status = value.toString();
                           });
                         },
                       ),
-                      RadioListTile(title: Text("Progress"), value: "Progress", groupValue: Status,
+                      RadioListTile(title: Text("Progress"), value: "Progress", groupValue: completedController.Status,
                         onChanged: (value){
                           setState(() {
-                            Status = value.toString();
+                            completedController.Status = value.toString();
                           });
                         },
                       ),
-                      RadioListTile(title: Text("Completed"), value: "Completed", groupValue: Status,
+                      RadioListTile(title: Text("Completed"), value: "Completed", groupValue: completedController.Status,
                         onChanged: (value){
                           setState(() {
-                            Status = value.toString();
+                            completedController.Status = value.toString();
                           });
                         },
                       ),
-                      RadioListTile(title: Text("Canceled"), value: "Canceled", groupValue: Status,
+                      RadioListTile(title: Text("Canceled"), value: "Canceled", groupValue: completedController.Status,
                         onChanged: (value){
                           setState(() {
-                            Status = value.toString();
+                            completedController.Status = value.toString();
                           });
                         },
                       ),
-                      Container(child: ElevatedButton(
+                      ElevatedButton(
                         style: AppButtonStyle(),
                         child: SuccessButtonChild('Confirm'),
                         onPressed: (){
                           Navigator.pop(context);
                           UpdateStatus(id);
                         },
-                      ),)
+                      )
                     ],
                   ),
                 );
@@ -124,11 +119,11 @@ class _completedTaskListState extends State<completedTaskList> {
 
   @override
   Widget build(BuildContext context) {
-    return Loading?(Center(child: CircularProgressIndicator())):RefreshIndicator(
+    return completedController.completedLoading?(const Center(child: CircularProgressIndicator())):RefreshIndicator(
         onRefresh: () async {
-          await CallData();
+          await completedController.CallData();
         },
-        child: TaskList(TaskItems,DeleteItem,StatusChange)
+        child: TaskList(completedController.TaskItems,DeleteItem,StatusChange)
     );
   }
 }

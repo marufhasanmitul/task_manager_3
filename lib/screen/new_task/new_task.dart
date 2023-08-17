@@ -148,48 +148,48 @@ class _newTaskListState extends State<newTaskList> {
             Navigator.pushNamed(context, "/taskCreate");
 
           },
-        child: Icon(Icons.add,color: Colors.white,size: 30,),
+          child: Icon(Icons.add,color: Colors.white,size: 30,),
         ),
-      body:Column(
-        children: [
-          SizedBox(
-            height: 90,
-            child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: CountData.length,
-                itemBuilder: (context,index){
-                  return SizedBox(
-                    width: 90,
-                    height: 80,
-                    child: Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Column(
-                          children: [
+        body:Column(
+          children: [
+            SizedBox(
+              height: 90,
+              child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: CountData.length,
+                  itemBuilder: (context,index){
+                    return SizedBox(
+                      width: 90,
+                      height: 80,
+                      child: Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Column(
+                            children: [
 
 
-                            Text("${CountData[index]['sum']}"),
-                            SizedBox(height: 10,),
-                            Text("${CountData[index]['_id']}"),
-                          ],
+                              Text("${CountData[index]['sum']}"),
+                              SizedBox(height: 10,),
+                              Text("${CountData[index]['_id']}"),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                }
+                    );
+                  }
 
+              ),
             ),
-          ),
-          Expanded(
-            child: Loading?(Center(child: CircularProgressIndicator())):RefreshIndicator(
-                onRefresh: () async {
-                  await CallData();
-                },
-                child: TaskList(TaskItems,DeleteItem,StatusChange)
+            Expanded(
+              child: Loading?(Center(child: CircularProgressIndicator())):RefreshIndicator(
+                  onRefresh: () async {
+                    await CallData();
+                  },
+                  child: TaskList(TaskItems,DeleteItem,StatusChange)
+              ),
             ),
-          ),
-        ],
-      )
+          ],
+        )
 
 
 

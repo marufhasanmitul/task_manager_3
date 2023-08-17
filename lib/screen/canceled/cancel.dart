@@ -1,40 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:tasks_menegers/api/apiClient.dart';
+import 'package:tasks_menegers/screen/canceled/cancel_controller.dart';
 import 'package:tasks_menegers/screen/task_list/task_lists.dart';
 import 'package:tasks_menegers/style/style.dart';
+import 'package:get/get.dart';
 
 
-class cancelTaskList extends StatefulWidget {
-  const cancelTaskList({Key? key}) : super(key: key);
+class CancelTaskList extends StatefulWidget {
+  const CancelTaskList({Key? key}) : super(key: key);
   @override
-  State<cancelTaskList> createState() => _cancelTaskListState();
+  State<CancelTaskList> createState() => _CancelTaskListState();
 }
 
-class _cancelTaskListState extends State<cancelTaskList> {
-
-  List TaskItems=[];
-  bool Loading=true;
-  String Status="Canceled";
+class _CancelTaskListState extends State<CancelTaskList> {
+  CancelController cancelController=Get.put(CancelController());
 
   @override
   void initState(){
-    CallData();
+    cancelController.CallData();
     super.initState();
-  }
-
-  CallData() async{
-    var data= await TaskListRequest("Canceled");
-    setState(() {
-      Loading=false;
-      TaskItems=data;
-    });
-  }
-
-  UpdateStatus(id) async{
-    setState(() {Loading=true;});
-    await TaskUpdateRequest(id,Status);
-    await CallData();
-    setState(() {Status = "Canceled";});
   }
 
   DeleteItem(id) async{
@@ -47,9 +31,9 @@ class _cancelTaskListState extends State<cancelTaskList> {
             actions: [
               OutlinedButton(onPressed: () async {
                 Navigator.pop(context);
-                setState(() {Loading=true;});
+                setState(() {cancelController.cancelLoading==true;});
                 await TaskDeleteRequest(id);
-                await CallData();
+                await cancelController.CallData();
               }, child: const Text('Yes')),
               OutlinedButton(onPressed: (){
                 Navigator.pop(context);
@@ -71,31 +55,31 @@ class _cancelTaskListState extends State<cancelTaskList> {
                   child:Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      RadioListTile(title: const Text("New"), value: "New", groupValue: Status,
+                      RadioListTile(title: const Text("New"), value: "New", groupValue: cancelController.Status,
                         onChanged: (value){
                           setState(() {
-                            Status = value.toString();
+                            cancelController.Status = value.toString();
                           });
                         },
                       ),
-                      RadioListTile(title: const Text("Progress"), value: "Progress", groupValue: Status,
+                      RadioListTile(title: const Text("Progress"), value: "Progress", groupValue: cancelController.Status,
                         onChanged: (value){
                           setState(() {
-                            Status = value.toString();
+                            cancelController.Status = value.toString();
                           });
                         },
                       ),
-                      RadioListTile(title: const Text("Completed"), value: "Completed", groupValue: Status,
+                      RadioListTile(title: const Text("Completed"), value: "Completed", groupValue: cancelController.Status,
                         onChanged: (value){
                           setState(() {
-                            Status = value.toString();
+                            cancelController.Status = value.toString();
                           });
                         },
                       ),
-                      RadioListTile(title: const Text("Canceled"), value: "Canceled", groupValue: Status,
+                      RadioListTile(title: const Text("Canceled"), value: "Canceled", groupValue: cancelController.Status,
                         onChanged: (value){
                           setState(() {
-                            Status = value.toString();
+                            cancelController.Status = value.toString();
                           });
                         },
                       ),
@@ -103,8 +87,8 @@ class _cancelTaskListState extends State<cancelTaskList> {
                         style: AppButtonStyle(),
                         child: SuccessButtonChild('Confirm'),
                         onPressed: (){
-                          Navigator.pop(context);
-                          UpdateStatus(id);
+                          Get.back();
+                          cancelController.UpdateStatus(id);
                         },
                       ),
                     ],
@@ -119,11 +103,11 @@ class _cancelTaskListState extends State<cancelTaskList> {
 
   @override
   Widget build(BuildContext context) {
-    return Loading?(Center(child: CircularProgressIndicator())):RefreshIndicator(
+    return cancelController.cancelLoading?(const Center(child: CircularProgressIndicator())):RefreshIndicator(
         onRefresh: () async {
-          await CallData();
+          await cancelController.CallData();
         },
-        child: TaskList(TaskItems,DeleteItem,StatusChange)
+        child: TaskList(cancelController.TaskItems,DeleteItem,StatusChange)
     );
   }
 }

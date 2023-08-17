@@ -11,54 +11,6 @@ var RequestHeader={"Content-Type":"application/json"};
 
 
 
-Future<bool> RegistrationRequest(FormValues) async{
-  var URL=Uri.parse("${BaseURL}/registration");
-  var PostBody=json.encode(FormValues);
-  var response= await  http.post(URL,headers:RequestHeader,body: PostBody);
-  var ResultCode=response.statusCode;
-  var ResultBody=json.decode(response.body);
-  if(ResultCode==200 && ResultBody['status']=="success"){
-    SuccessToast("Request Success");
-    return true;
-  }
-  else{
-    ErrorToast("Request fail ! try again");
-    return false;
-  }
-}
-
-Future<bool> VerifyEmailRequest(Email) async{
-  var URL=Uri.parse("${BaseURL}/RecoverVerifyEmail/${Email}");
-  var response= await http.get(URL,headers:RequestHeader);
-  var ResultCode=response.statusCode;
-  var ResultBody=json.decode(response.body);
-  if(ResultCode==200 && ResultBody['status']=="success"){
-    await WriteEmailVerification(Email);
-    SuccessToast("Request Success");
-    return true;
-  }
-  else{
-    ErrorToast("Request fail ! try again");
-    return false;
-  }
-}
-
-Future<bool> VerifyOTPRequest(Email,OTP) async{
-  var URL=Uri.parse("${BaseURL}/RecoverVerifyOTP/${Email}/${OTP}");
-  var response= await  http.get(URL,headers:RequestHeader);
-  var ResultCode=response.statusCode;
-  var ResultBody=json.decode(response.body);
-  if(ResultCode==200 && ResultBody['status']=="success"){
-    await WriteOTPVerification(OTP);
-    SuccessToast("Request Success");
-    return true;
-  }
-  else{
-    ErrorToast("Request fail ! try again");
-    return false;
-  }
-}
-
 
 
 Future<List> TaskListRequest(Status) async {
@@ -78,26 +30,7 @@ Future<List> TaskListRequest(Status) async {
   }
 }
 
-Future<bool> TaskCreateRequest(FormValues) async {
 
-  var URL=Uri.parse("${BaseURL}/createTask");
-  String? token= await ReadUserData("token");
-  var RequestHeaderWithToken={"Content-Type":"application/json","token":'$token'};
-  var PostBody=json.encode(FormValues);
-  var response= await http.post(URL,headers:RequestHeaderWithToken,body: PostBody);
-  var ResultCode=response.statusCode;
-  var ResultBody=json.decode(response.body);
-
-
-  if(ResultCode==200 && ResultBody['status']=="success"){
-    SuccessToast("Request Success");
-    return true;
-  }
-  else{
-    ErrorToast("Request fail ");
-    return false;
-  }
-}
 
 
 

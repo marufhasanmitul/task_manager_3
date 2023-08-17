@@ -7,10 +7,10 @@ import 'package:tasks_menegers/auth/singin/singin.dart';
 import 'package:tasks_menegers/auth/singup/singup.dart';
 import 'package:tasks_menegers/auth/verify_email/verify_email.dart';
 import 'package:tasks_menegers/auth/verify_pin/verify_pin.dart';
-import 'package:tasks_menegers/screen/home_screen/home_page.dart';
+import 'package:tasks_menegers/screen/home_screen/home_page/home_page.dart';
 import 'package:get/get.dart';
 
-import 'package:tasks_menegers/screen/home_screen/new_task_list.dart';
+import 'package:tasks_menegers/screen/home_screen/new_task_list/new_task_list.dart';
 
 
 
@@ -35,13 +35,13 @@ class MyApp extends StatelessWidget {
       title: "Task Manager",
       initialRoute: firstRoute,
       routes: {
-        '/':(context)=> const homeScreen(),
+        '/':(context)=> const HomeScreen(),
         '/login':(context)=> const LoginScreen(),
-        '/registration':(context)=> const registrationScreen(),
-        '/emailVerification':(context)=> const emailVerificationScreen(),
-        '/pinVerification':(context)=> const pinVerificationScreen(),
+        '/registration':(context)=> const RegistrationScreen(),
+        '/emailVerification':(context)=> const EmailVerificationScreen(),
+        '/pinVerification':(context)=> const PinVerificationScreen(),
         '/setPassword':(context)=> const SetPasswordScreen(),
-        '/taskCreate':(context)=> const taskCreateScreen()
+        '/taskCreate':(context)=> const TaskCreateScreen()
       },
     );
   }
